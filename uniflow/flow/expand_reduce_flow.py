@@ -1,4 +1,4 @@
-from flow import Flow
+from uniflow.flow.flow import Flow
 from uniflow.op.basic.expand_op import ExpandOp
 from uniflow.op.basic.reduce_op import ReduceOp
 from uniflow.node import Node
@@ -14,6 +14,6 @@ class ExpandReduceFlow(Flow):
             expanded_nodes = expand_op(node)
             
             reduce_op = ReduceOp("reducer") 
-            reduced_node = reduce_op(expanded_nodes)
-        reduced_nodes.append(reduced_node)
+            reduced_node = reduce_op(expanded_nodes[0], expanded_nodes[1])
+            reduced_nodes.append(reduced_node)
         return reduced_nodes

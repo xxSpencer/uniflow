@@ -11,7 +11,26 @@ from uniflow.constants import EXTRACT, RATER, TRANSFORM
 from uniflow.flow.config import ExtractConfig, RaterConfig, TransformConfig
 from uniflow.flow.flow_factory import FlowFactory
 from uniflow.op.op import OpScope
+from uniflow.flow.expand_reduce_flow import ExpandReduceFlow
 
+from uniflow.node import Node
+
+###############################################################################
+#                             ExpandReduce Server                             #
+###############################################################################
+class ExpandReduceServer:
+    def __init__(self, config: dict) -> None:
+        self._flow = ExpandReduceFlow()
+        
+    def run(self, input_list: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+        nodes = [Node(str(i), item) for i, item in enumerate(input_list)]
+        print(nodes)
+        output_nodes = self._flow.run(nodes)
+        print(output_nodes)
+        # output_list = [node.value_dict for node in output_nodes]
+        output_list = [{'output': [node.value_dict], 'root': node} for node in output_nodes ]
+        print(output_list)
+        return output_list
 ###############################################################################
 #                                Extract Server                               #
 ###############################################################################

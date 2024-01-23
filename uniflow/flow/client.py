@@ -1,11 +1,19 @@
 """All Uniflow Clients"""
 
 from dataclasses import asdict
-from typing import Any, List, Mapping
+from typing import Any, List, Mapping, Optional
 
 from uniflow.flow.config import ExtractConfig, RaterConfig, TransformConfig
-from uniflow.flow.server import ExtractServer, RaterServer, TransformServer
+from uniflow.flow.server import ExtractServer, RaterServer, TransformServer, ExpandReduceServer
 
+class ExpandReduceClient:
+    def __init__(self, config: Optional[dict] = {"test_key":"test_value"}) -> None:
+        self.__config = config
+        # print(self.__config)
+        self._server=ExpandReduceServer((self.__config))
+    def run(self, input_list: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+        output = self._server.run(input_list)
+        return output
 
 class ExtractClient:
     """Uniflow Extract Client"""
